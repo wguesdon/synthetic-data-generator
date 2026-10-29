@@ -1,0 +1,6 @@
+case	file
+penguins_raw	input/public/penguins_raw_csv/penguins_raw.csv
+heart_failure	input/public/heart_failure_csv/heart_failure_clinical_records_dataset.csv
+mimic_patients	input/public/mimic_patients_csv/patients.csv
+mimic_admissions	input/public/mimic_admissions_csv/admissions.csv
+titanic	input/public/titanic_csv/titanic.csv

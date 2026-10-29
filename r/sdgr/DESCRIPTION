@@ -1,0 +1,23 @@
+Package: sdgr
+Title: Synthetic Datasets from a YAML Config with the 'sdg' Tool
+Version: 0.14.0
+Authors@R:
+    person("William", "Guesdon", email = "wguesdon@gmail.com", role = c("aut", "cre"))
+Description: Calls the 'sdg' command line tool from R. The functions write a
+    config from a data frame, check a config, generate synthetic data and read
+    the synthetic tables back as data frames. The glimpse and the report of a
+    data frame hold no real value, so they can leave a secure machine.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports:
+    tools,
+    utils
+Suggests:
+    arrow,
+    readxl,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+SystemRequirements: sdg 0.14.0 or later (the Python package of
+    https://github.com/wguesdon/synthetic-data-generator)

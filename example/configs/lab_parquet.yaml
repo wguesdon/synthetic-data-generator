@@ -1,0 +1,39 @@
+# Generic example: one lab table as a Parquet file, with typed columns.
+# Every name and value here is invented.
+version: 1
+seed: 20261028
+mode: resample
+
+datasets:
+  - name: lab
+    format: parquet
+    file: lab_results.parquet
+    sheets:
+      - rows: 200
+        columns:
+          - name: record_id
+            kind: identifier
+            pattern: "99999"
+            as_number: true
+          - name: site
+            kind: categorical
+            levels: {north: 0.5, south: 0.3, east: 0.2}
+          - name: ward_code
+            kind: text
+            lengths: [3, 4]
+            shapes: {A99: 0.8, A999: 0.2}
+          - name: crp_mg_l
+            kind: numeric
+            quantiles: [0.3, 1.2, 4.5, 18.0, 180.0]
+            decimals: 1
+            missing: 0.08
+          - name: result_date
+            kind: date
+            interval_days: [0, 30, 60, 90]
+          - name: collected_at
+            kind: date
+            interval_days: [0, 30, 60, 90]
+            date_format: "%Y-%m-%d %H:%M:%S"
+          - name: fasting
+            kind: boolean
+            true_share: 0.33

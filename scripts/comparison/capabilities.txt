@@ -1,0 +1,63 @@
+id	group	capability	check
+I1	Input	Make a synthetic copy of a real table with no code for each column	The tool reads the invented visits table and writes a synthetic table with the same columns
+I2	Input	Copy several tables or sheets in one run	One run copies the two sheets of the invented workbook
+I3	Input	Find the header under title rows and comment rows	The copy of a CSV file with a title row and a comment line has the real header
+I4	Input	Read a Parquet table	The tool reads the invented Parquet table and copies its columns
+I5	Input	Copy an in-memory data frame	One call copies a data frame that is already in memory
+I6	Input	Make a table from a database schema with no rows	A SQLite table with no rows gives a synthetic table with its columns
+V1	Values	Numbers follow the real distribution and copy no real value	KS statistic below 0.1 on a skewed column, and less than 5% of the synthetic values equal a real value, where a resample of the real values gives 100%
+V2	Values	Categories keep their real shares	Each level share is within 0.05 of the real share
+V3	Values	The missing share is exact	The count of missing cells equals the real count within one cell
+V4	Values	Missing tokens such as NA or <LOD stay in a numeric column	The synthetic column holds the token <LOD in the real share within 0.02
+V5	Values	Invented identifiers keep the real shape	Each identifier has the shape A9999, and at most 1% equal a real identifier by chance
+V6	Values	Unique values on request	1,000 identifiers have no repeat
+V7	Values	Dates keep their spacing from an invented start	The synthetic date span is within 10% of the real span and no synthetic date is a real date
+V8	Values	Booleans keep a true share	The true share is within 0.05 of the target
+V9	Values	Text keeps a code shape such as A99	Each ward code has the shape A99
+V10	Values	Real-looking person names	1,000 names hold at least 500 distinct full names
+V11	Values	Real-looking emails	1,000 values are valid email addresses
+V12	Values	Real-looking phone numbers	1,000 values hold 10 digits or more each
+V13	Values	Real-looking postal addresses	1,000 addresses hold a number and a street word
+V14	Values	Values in other locales	French and German names come from local name lists
+V15	Values	Other value families such as company, job, IBAN and IP address	The four families each give 100 valid values
+V16	Values	The same seed gives the same data	Two runs with one seed give identical files
+V17	Values	Any row count	A copy of the 200-row table has 1,000 rows
+D1	Design	Planted group effect with a truth table	A fold change of 2 between two groups is found back, and a truth table lists it
+D2	Design	Subjects in groups at timepoints, with missing samples	The output has subjects in two groups at three timepoints, with 10% of the later samples absent
+D3	Design	Replicates and censoring at a lower limit	Each sample has three replicates, and 5% of the values hold the censor token
+D4	Design	A null dataset for a false positive check	With null set, the planted fold changes are 1
+D5	Design	Correlation between numeric columns	A real Spearman correlation of 0.8 stays above 0.5
+D6	Design	Date order between two columns	Each discharge date comes on or after its admission date
+D7	Design	Key link between two tables	Each child key is a parent key
+P1	Privacy	Find sensitive columns by their names	The tool flags the age and sex columns
+P2	Privacy	Protect a sensitive column that has a neutral name	No real email of the column contact reaches a shareable file
+P3	Privacy	Generic column names and levels in the synthetic data	The synthetic table holds no real column name and no real level
+P4	Privacy	No real name in a bundle with generic names	No file of the generic bundle holds a real column name
+P5	Privacy	A key to the real names that renames the real data	One command gives the real data the generic names of the key
+P6	Privacy	Audit a shareable file against the real data	A planted real identifier makes the audit fail
+P7	Privacy	No minimum or maximum of a private column in a shareable file	The real minimum and maximum of age are in no shareable file
+P8	Privacy	Drop sensitive columns	The copy leaves out the columns that the user names
+P9	Privacy	Replace a sensitive column with real-looking fakes	The email column of the copy holds valid invented emails
+O1	Output	Write CSV or TSV	The output is a CSV file
+O2	Output	Write an Excel workbook	The output is an xlsx workbook
+O3	Output	Write Parquet	The output is a Parquet file
+O4	Output	Write RDS	The output is an RDS file that R reads
+O5	Output	Bundle for an LLM with the data, a schema and instructions	The output holds the data, a JSON schema and a text for the LLM
+O6	Output	Compare the synthetic structure with the real structure	A column whose kind changed shows as a difference
+O7	Output	Manifest with a hash of each file	A manifest lists a SHA-256 hash for each output file
+F1	Formats	Olink NPX file	The output reads back as an Olink file
+F2	Formats	Count matrix	The output is a count matrix of genes by samples
+F3	Formats	AnnData h5ad file	The output reads back with anndata
+F4	Formats	Microarray matrix	The output is a matrix of log2 intensities
+F5	Formats	NanoString RCC files	The output is a folder of RCC files
+F6	Formats	FCS files	The output is a folder of FCS files that flowio reads
+F7	Formats	FASTQ files	The output is a folder of FASTQ files
+W1	Workflow	Command line	A shell command makes data
+W2	Workflow	Python interface	A Python call makes data
+W3	Workflow	R interface	An R call makes data
+W4	Workflow	Test fixture for pytest	A pytest test receives generated data from a fixture
+W5	Workflow	Add a new value generator as a plugin	A user-defined generator gives values through the tool
+W6	Workflow	One script file for a machine without the package	One file runs the tool on a machine where it is not installed
+W7	Workflow	Agent skill that writes the config	A skill file tells an agent how to write the spec
+W8	Workflow	A saved spec file that makes the same data again	A spec file on disk gives identical data on a second run
+W9	Workflow	Normalize input values such as 85% or yes and no	A text column of percent values becomes numeric

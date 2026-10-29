@@ -1,0 +1,59 @@
+[project]
+name = "sdg"
+dynamic = ["version"]
+description = "Synthetic datasets from a YAML config, so real customer data never reaches an LLM."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "William Guesdon", email = "wguesdon@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "anndata>=0.10",
+    "flowio>=1.3",
+    "numpy>=2.2",
+    "openpyxl>=3.1",
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "pydantic>=2.10",
+    "pyyaml>=6.0",
+    "scipy>=1.14",
+]
+
+[project.scripts]
+sdg = "sdg.cli:main"
+
+[project.entry-points.pytest11]
+sdg = "sdg.pytest_plugin"
+
+[project.optional-dependencies]
+faker = [
+    "faker>=30",
+]
+r = [
+    "pyreadr>=0.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# The version is single-sourced from sdg/version.py and kept in lockstep with
+# the root VERSION file; tests/test_version.py checks the two agree.
+[tool.hatch.version]
+path = "src/sdg/version.py"
+pattern = "SDG_VERSION = ['\"](?P<version>[^'\"]+)['\"]"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sdg"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "faker>=30",
+    "pyreadr>=0.5",
+    "pytest>=8",
+]

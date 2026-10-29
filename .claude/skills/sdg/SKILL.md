@@ -1,0 +1,133 @@
+---
+name: sdg
+description: >-
+  Make synthetic datasets that copy the structure of real customer data and hold
+  no real value, so an agent can help write analysis code without the real data.
+  Use when the user describes a dataset, pastes sdg glimpse reports, or asks for
+  fake, synthetic, dummy or test data as CSV, Excel, Parquet, FASTQ, FCS, a count matrix,
+  h5ad, a microarray matrix, Olink NPX or NanoString RCC files. Drives the sdg CLI.
+  Do not open real data and do not hand-write a data generator.
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+---
+
+# sdg
+
+Make synthetic data from a YAML config. The config holds the structure of the real data and no real value. Your job is to write the config with the user and to run `sdg`. Do not write a data generator by hand. Write original generation code only when no `sdg` format fits, and say so when you do.
+
+## The one command surface
+
+Run each command through `uv run sdg`. Do not call Python directly to make data.
+
+| Command | Action |
+|---|---|
+| `uv run sdg schema` | Prints the JSON schema of the config. Read it before you write a config |
+| `uv run sdg init <format>` | Writes a template config for one format, with a comment on each field |
+| `uv run sdg check <config> --json` | Validates a config. Each error gives the path of the field |
+| `uv run sdg generate <config> -o <folder>` | Writes the synthetic data, the truth tables and a manifest |
+| `uv run sdg glimpse <files>` | Prints a structure report with no real value |
+| `uv run sdg compare <real report> <synthetic report>` | Lists the structure differences between two glimpse reports |
+| `uv run sdg validate <folder>` | Checks the output against the config, and the planted effects against the truth tables |
+
+The user runs `sdg glimpse`, `sdg describe`, `sdg report`, `sdg profile`, `sdg audit` and `sdg relabel` on the secure machine. You never run them on real data. If `sdg` is not installed on the secure machine, the user can upload `single_script/sdg_secure.py` and run `uv run sdg_secure.py glimpse <files>`. The reports are the same.
+
+## Data boundary
+
+- Do not open, list or read real data.
+- Use only the description and the glimpse reports that the user pastes as sources about the real data.
+- Do not infer or reconstruct a real value from a report.
+- If a report shows a real identifier or a real measurement, stop and tell the user. Do not use that value.
+- Put column names and category labels from a report into the config only. Do not put other report text into code, comments, logs, tests or documentation.
+- Use synthetic identifiers and synthetic values only.
+
+## Where files go
+
+1. Run every command from the repository root.
+2. Save each pasted glimpse report and each description under `input/<project>/`. Git ignores this folder. It never holds real data.
+3. Write the config, the synthetic output and your own notes under `sdg_output/<project>/`. Git ignores this folder.
+4. Do not write a file outside the repository.
+5. Give the user each path relative to the repository root.
+
+The project config lives in the customer repository. After the work, tell the user to copy `sdg_output/<project>/config.yaml` there. In the customer repository, `uv run sdg generate config.yaml -o <folder>` makes the same data again from the seed.
+
+If the report uses generic names, the code uses the generic names too. To run the code on the real data, the user runs `uv run sdg relabel key.csv <files> -o <folder>` on the secure machine.
+
+## Intake of glimpse reports
+
+- If the user pastes several reports, do not call a tool or change a file during the intake.
+- After each report, confirm its dataset name in one sentence. Then wait for the next report.
+- If a report is incomplete or has an error, ask one specific question.
+- A report made with `--generic-labels` names each column by its kind, such as `numeric_1` or `categorical_1`, and each level as `level_<n>`. Keep these names in the config. Do not ask for the real names.
+- A private table lists its `private columns`, which print counts only. Give each of them default values, and mark each as an assumption. The other columns print safe facts. Put `codes` into `exact` with their shares and into `quantiles` as the first and the last code. Put the `5% to 95%` range and the `median` into `quantiles`. Do not invent a minimum or a maximum beyond that range.
+- A text column of a report can print a `provider`, such as `'email'` or a template such as `'{{last_name}}, {{first_name}}'`. Put it into the `provider` field of the column. Ask the user for a `locale` when the data is not in English. The machine that generates the data needs `uv add "sdg[faker]"`.
+- A date column of a report can print `after` and `days after`. Put the earlier column into the `after` field, and the days into `interval_days`.
+- An identifier column of a report can print `keys of: file_1.csv 'patient_id'`. Put `link: {dataset: file_1, column: patient_id}` into the column.
+- A table of a report can print `correlations`, such as `'il6' ~ 'crp' 0.78`. Put each pair into the sheet field `correlations` as `{columns: [il6, crp], rho: 0.78}`. A sheet with design columns takes no `correlations`, so leave the field out of a sheet in the model mode.
+- A report lists the `shapes` of an identifier column and of a text column. For an identifier, put the shapes into `pattern`: one shape as a text, or several as a mapping with their shares. For a text column, put the shapes into `shapes` with their shares of the filled cells when they fill half of the cells or more.
+- The user can also paste `sdg describe design` and `sdg describe groups` reports. Take `design.subjects.groups`, `design.timepoints`, `design.missing_samples`, `design.icc` and the replicates from the design report. Take the contrast and the fold change of each effect from the groups report: the `ratio` for a linear feature, or 2 to the power of the `difference` for a log2 feature such as NPX.
+- The user can paste the report of `sdg report`. It holds a glimpse part, a design part and a groups part. Use it as the glimpse report and as the describe reports. Save it as one file, and give it to `sdg compare` as the real report, because the compare reads its glimpse part only.
+- Start the workflow only after the user sends this marker.
+
+```text
+GLIMPSE_INPUT_COMPLETE
+```
+
+## Workflow
+
+1. Save the input under `input/<project>/`.
+2. List each item that the input does not give. Examples are the study design, the subject count, the timepoints, the effects and the artefacts. If the data has groups or timepoints and the input has no design or groups description, ask the user to run `uv run sdg report <files>` on the secure machine. If a description found the wrong roles, ask the user to run `uv run sdg describe groups <file>` with the role options.
+3. Ask the user about each item, one question at a time.
+4. If the user has no answer for an item, use a default value and mark it as an assumption.
+5. Run `uv run sdg schema`, and `uv run sdg init <format>` for each format.
+6. Write the config to `sdg_output/<project>/config.yaml`. Add a YAML comment `# assumption: ...` to each assumed value.
+7. Run `uv run sdg check sdg_output/<project>/config.yaml --json` and correct each error.
+8. Run `uv run sdg generate sdg_output/<project>/config.yaml -o sdg_output/<project>/data`.
+9. Run `uv run sdg glimpse sdg_output/<project>/data > sdg_output/<project>/synthetic_glimpse.txt`.
+10. If a real glimpse report exists, run `uv run sdg compare input/<project>/<report> sdg_output/<project>/synthetic_glimpse.txt`.
+11. Correct the config for each error, then do steps 7 to 10 again.
+12. Run `uv run sdg validate sdg_output/<project>/data`.
+
+## Config in short
+
+The full reference is in `docs/how_it_works.md`. The examples in `example/` show a description and the config made from it.
+
+| Section | Content |
+|---|---|
+| `version`, `seed` | Always `1`, and any seed of 0 or more |
+| `mode` | `resample` draws each column on its own. `model` draws from the design, with effects and artefacts |
+| `design` | Subjects with their groups, timepoints, and the share of missing samples |
+| `datasets` | One entry per file or folder, with a `format` and a `file` |
+| `effects` | Known effects, each with a dataset, a feature, two groups and a fold change |
+| `artefacts` | LLOQ censoring and replicates |
+
+| Format | Writes | Model mode |
+|---|---|---|
+| `csv`, `tsv`, `excel` | One table file. Sheets, title and comment rows, column kinds, NA tokens, stray spaces and empty rows copy the delivery | Yes |
+| `parquet` | One Parquet table with typed columns and null cells | Yes |
+| `rds` | One RDS file of an R data frame, with the extra `sdg[r]` | Yes |
+| `olink` | One NPX file in the long layout as CSV, Excel or Parquet, or in the wide NPX Manager layout as Excel or CSV. A wide Target 96 panel needs its 92 assays, and a Target 48 panel its 45 | Yes |
+| `counts` | One count matrix, features by samples | Yes |
+| `h5ad` | One AnnData file of single-cell counts | No |
+| `microarray` | One log2 intensity matrix, probes by samples | Yes |
+| `nanostring` | A folder with one RCC file per sample | Yes |
+| `fcs` | A folder with one FCS file per sample | Yes |
+| `fastq` | A folder with one FASTQ file, or one pair, per sample | No |
+
+## Completion report
+
+- Give the path of the config and the path of the output folder.
+- Give each command that you ran and its result.
+- List each assumption in the config.
+- List each item that the input could not resolve.
+
+## Install
+
+The source of this skill is `skills/claude-code/SKILL.md`. The repository commits copies of it, so each harness loads the skill in a clone.
+
+| Harness | Copy that the harness reads | Invocation |
+|---|---|---|
+| Claude Code | `.claude/skills/sdg/SKILL.md` | `/sdg` |
+| Codex | `.agents/skills/sdg/SKILL.md` | `$sdg` |
+| opencode | `.agents/skills/sdg/SKILL.md` and `.claude/skills/sdg/SKILL.md` | The `skill` tool |
+| pi | `.agents/skills/sdg/SKILL.md` | `/skill:sdg` |
+
+Edit only the source. Then run `scripts/sync_agent_harness.sh` to write the copies and the adapters. pi loads a project skill only after you trust the project.

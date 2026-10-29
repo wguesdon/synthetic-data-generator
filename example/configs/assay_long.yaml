@@ -1,0 +1,55 @@
+# Made from example/descriptions/assay_long.md by the sdg workflow.
+# Every name and number is invented.
+version: 1
+seed: 20261011
+mode: model
+
+design:
+  subjects:
+    prefix: PT-
+    groups:
+      arm_a: 12
+      arm_b: 8
+  timepoints: [baseline, week_6, week_12]
+  icc: 0.7  # assumption: no between-patient share was given
+  missing_samples: 0.1
+
+datasets:
+  - name: assay
+    format: csv
+    file: assay_long.csv
+    sheets:
+      - name: sheet_1
+        layout: long
+        features:  # assumption: no concentration ranges were given
+          - {name: IL6, quantiles: [0.8, 1.5, 2.2, 3.0, 4.1, 5.5, 7.2, 9.6, 13.0, 19.0, 40.0], decimals: 2}
+          - {name: TNF, quantiles: [2.0, 3.1, 3.9, 4.6, 5.3, 6.1, 7.0, 8.1, 9.6, 12.0, 20.0], decimals: 2}
+          - {name: IL10, quantiles: [0.5, 0.9, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 4.2, 5.8, 11.0], decimals: 2}
+          - {name: CXCL8, quantiles: [3.0, 5.0, 6.5, 8.0, 9.5, 11.0, 13.0, 15.5, 19.0, 25.0, 45.0], decimals: 2}
+          - {name: CCL2, quantiles: [80, 140, 175, 205, 235, 265, 300, 345, 410, 520, 850], decimals: 1}
+        columns:
+          - {name: Patient ID, kind: design, field: subject}
+          - {name: Arm, kind: design, field: group}
+          - {name: Visit, kind: design, field: timepoint}
+          - {name: Well, kind: design, field: replicate}
+          - {name: Analyte, kind: design, field: feature}
+          - {name: Concentration, kind: design, field: value}
+
+effects:
+  - dataset: assay
+    feature: IL6
+    contrast: [arm_a, arm_b]
+    fold_change: 2.0
+    timepoints: [week_12]
+  - dataset: assay
+    feature: IL10
+    contrast: [arm_a, arm_b]
+    fold_change: 1.1
+    timepoints: [week_6]
+
+artefacts:
+  lower_limit_quantile: 0.01
+  censor_token: "<LLOQ"
+  replicates:
+    n: 2
+    cv_pct: 8.0  # assumption: no well-to-well spread was given

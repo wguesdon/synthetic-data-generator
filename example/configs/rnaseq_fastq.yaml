@@ -1,0 +1,25 @@
+# Made from example/descriptions/rnaseq_fastq.md by the sdg workflow.
+# Every name and number is invented.
+version: 1
+seed: 20261011
+mode: resample
+
+datasets:
+  - name: fastq
+    format: fastq
+    file: fastq
+    samples: 4
+    sample_pattern: "S9"
+    paired: true
+    pair_suffixes: [_R1_001, _R2_001]
+    compressed: true
+    reads: 1000  # assumption: a small file per sample is enough
+    read_length: 100
+    quality_means: [32, 34, 35, 36, 36, 36, 35, 34, 33, 31]  # assumption: a typical NovaSeq profile
+    quality_sds: [2, 2, 2, 2, 2, 3, 3, 3, 4, 5]
+    header_style: illumina
+    index_length: 8
+    reference: null  # assumption: replace with the path of a public transcriptome FASTA
+    library: rnaseq
+    insert_mean: 250
+    insert_sd: 40

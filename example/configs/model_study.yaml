@@ -1,0 +1,58 @@
+# Generic example: a two-arm study in the model mode.
+# Every name and value here is invented.
+version: 1
+seed: 20261011
+mode: model
+
+design:
+  subjects:
+    prefix: SUBJ-
+    groups:
+      group_a: 8
+      group_b: 7
+  timepoints: [timepoint_1, timepoint_2]
+  icc: 0.6
+  missing_samples: 0.1
+
+datasets:
+  - name: assay
+    format: csv
+    file: synthetic_assay.csv
+    sheets:
+      - name: sheet_1
+        layout: wide
+        columns:
+          - name: subject_id
+            kind: design
+            field: subject
+          - name: arm
+            kind: design
+            field: group
+          - name: visit
+            kind: design
+            field: timepoint
+          - name: well
+            kind: design
+            field: replicate
+          - name: feature_01
+            kind: numeric
+            quantiles: [1.0, 2.5, 4.0, 6.5, 12.0]
+            decimals: 2
+          - name: feature_02
+            kind: numeric
+            quantiles: [0.0, 0.4, 0.9, 1.6, 3.2]
+            decimals: 2
+
+effects:
+  - dataset: assay
+    feature: feature_01
+    contrast: [group_a, group_b]
+    fold_change: 2.0  # assumption: no effect size was given
+    timepoints: [timepoint_2]
+
+artefacts:
+  lower_limit_quantile: 0.05
+  censor_token: "<LLOQ"
+  replicates:
+    n: 3
+    cv_pct: 8.0

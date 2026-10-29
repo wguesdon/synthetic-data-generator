@@ -1,0 +1,36 @@
+# Generic example: one visits table as a CSV file.
+# Every name and value here is invented.
+version: 1
+seed: 20261028
+mode: resample
+
+datasets:
+  - name: visits
+    format: csv
+    file: visits.csv
+    sheets:
+      - rows: 80
+        columns:
+          - name: visit_id
+            kind: identifier
+            pattern: "V-9999"
+          - name: arm
+            kind: categorical
+            levels: {placebo: 0.5, active: 0.5}
+          - name: il6
+            kind: numeric
+            quantiles: [0.5, 2.0, 4.0, 9.0, 40.0]
+            decimals: 2
+          - name: crp
+            kind: numeric
+            quantiles: [0.3, 1.2, 4.5, 18.0, 180.0]
+            decimals: 1
+            missing: 0.05
+          - name: visit_date
+            kind: date
+            interval_days: [0, 30, 60, 90]
+          - name: fasting
+            kind: boolean
+            true_share: 0.3
+        correlations:
+          - {columns: [il6, crp], rho: 0.7}

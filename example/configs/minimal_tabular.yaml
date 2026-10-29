@@ -1,0 +1,39 @@
+# Generic example: one workbook with one column of each kind.
+# Every name and value here is invented.
+version: 1
+seed: 20261011
+mode: resample
+
+datasets:
+  - name: clinical
+    format: excel
+    file: synthetic_clinical.xlsx
+    sheets:
+      - name: sheet_1
+        rows: 120
+        empty_rows: 6
+        columns:
+          - name: subject_id
+            kind: identifier
+            pattern: "AA-9999"
+          - name: visit
+            kind: categorical
+            # The trailing space in "visit_2 " is a common quirk of real files.
+            levels:
+              visit_1: 0.5
+              "visit_2 ": 0.5
+          - name: feature_01
+            kind: numeric
+            quantiles: [0.12, 1.5, 3.4, 5.9, 9.8]
+            missing: 0.22
+            na_token: "NA"
+          - name: comment
+            kind: text
+            lengths: [0, 40]
+            missing: 0.8
+          - name: sample_date
+            kind: date
+            interval_days: [0, 14, 28, 56, 84]
+          - name: responder
+            kind: boolean
+            true_share: 0.35

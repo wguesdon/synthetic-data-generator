@@ -1,0 +1,42 @@
+# Made from example/descriptions/nanostring_rcc.md by the sdg workflow.
+# Every name and number is invented.
+version: 1
+seed: 20261011
+mode: model
+
+design:
+  subjects:
+    prefix: TUM-
+    groups:
+      responder: 8
+      non_responder: 8
+
+datasets:
+  - name: rcc
+    format: nanostring
+    file: rcc
+    gene_rlf: NS_CUSTOM_CODESET  # assumption: no code set name was given
+    lane_attributes:
+      - {name: ID}
+      - {name: FovCount, quantiles: [280, 280]}
+      - {name: FovCounted, quantiles: [255, 280]}
+      - {name: BindingDensity, quantiles: [0.2, 0.6, 0.9, 1.2, 1.6], decimals: 2}
+    codes:  # assumption: no mean counts were given
+      - {code_class: Endogenous, name: CXCL9, accession: NM_002416.1, mean: 400}
+      - {code_class: Endogenous, name: CD8A, accession: NM_001768.5, mean: 250}
+      - {code_class: Endogenous, name: GZMB, accession: NM_004131.3, mean: 300}
+      - {code_class: Endogenous, name: IFNG, accession: NM_000619.2, mean: 60}
+      - {code_class: Endogenous, name: PDCD1, accession: NM_005018.1, mean: 90}
+      - {code_class: Endogenous, name: FOXP3, accession: NM_014009.3, mean: 120}
+      - {code_class: Housekeeping, name: GAPDH, accession: NM_002046.3, mean: 4000}
+      - {code_class: Housekeeping, name: ACTB, accession: NM_001101.2, mean: 6000}
+      - {code_class: Positive, name: POS_A(128), accession: ERCC_00117.1, mean: 30000}
+      - {code_class: Positive, name: POS_B(32), accession: ERCC_00112.1, mean: 8000}
+      - {code_class: Positive, name: POS_C(8), accession: ERCC_00002.1, mean: 2000}
+      - {code_class: Negative, name: NEG_A(0), accession: ERCC_00096.1, mean: 10}
+      - {code_class: Negative, name: NEG_B(0), accession: ERCC_00041.1, mean: 8}
+    count_cv: 0.4
+    lane_cv: 0.25
+
+effects:
+  - {dataset: rcc, feature: CXCL9, contrast: [responder, non_responder], fold_change: 2.5}

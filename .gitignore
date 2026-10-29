@@ -1,0 +1,36 @@
+# Real data and generated data never go into git.
+input/
+data/
+sdg_output/
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.parquet
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.fcs
+*.h5ad
+*.rcc
+*.RCC
+*.CEL
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Committed examples hold generic synthetic data only.
+!example/**
+
+# Local agent settings and tool installs
+.claude/settings.local.json
+.opencode/node_modules/
+
+# Session notes stay on the local machine.
+/SESSION_SUMMARY.md
+/prompts/
+/private/

@@ -1,0 +1,226 @@
+# Made from example/descriptions/olink_wide.md by the sdg workflow.
+# Every name and number is invented, the Olink IDs and UniProt IDs too.
+version: 1
+seed: 20261012
+mode: model
+
+design:
+  subjects:
+    prefix: PT-
+    groups:
+      patient: 28
+      healthy: 20
+
+datasets:
+  - name: olink
+    format: olink
+    layout: wide
+    file: olink_wide.xlsx
+    sheet: NPX Data
+    plates: 1
+    plate_pattern: "PLT-9"
+    qc_pass: Pass
+    qc_warn: Warning
+    qc_warn_share: 0.03
+    scale: log2
+    decimals: 4
+    wide:
+      software: NPX Manager 2.1.0
+      data_type: NPX Data
+      top_rows: [Panel, Assay, Uniprot ID, OlinkID]
+      # columns are left out: one Plate ID column and one QC Warning column for the panel
+      bottom_rows:
+        - {label: LOD, role: lod}
+        - {label: Missing Data freq., role: missing_freq}
+        - {label: Normalization, role: text, text: Intensity}
+    # A Target 96 panel has 92 assays, and OlinkAnalyze checks the count.
+    # assumption: no NPX ranges, limits or shares below the limit were given
+    # assumption: the 89 other assays get invented names and one NPX range
+    assays:
+      - {assay: IL6, olink_id: OID00001, uniprot: P00001, panel: Olink Target 96 Inflammation, lod: 1.5, below_lod: 0.05,
+         quantiles: [3.0, 3.5, 3.8, 4.0, 4.2, 4.4, 4.6, 4.8, 5.0, 5.3, 5.8]}
+      - {assay: TNF, olink_id: OID00002, uniprot: P00002, panel: Olink Target 96 Inflammation, lod: 0.8, below_lod: 0.1,
+         quantiles: [0.6, 1.4, 1.8, 2.1, 2.4, 2.7, 3.0, 3.3, 3.7, 4.3, 6.0]}
+      - {assay: CCL2, olink_id: OID00003, uniprot: P00003, panel: Olink Target 96 Inflammation, lod: 2.0, below_lod: 0.0,
+         quantiles: [8.0, 9.0, 9.5, 9.8, 10.1, 10.3, 10.5, 10.8, 11.1, 11.6, 12.5]}
+      - {assay: assay_4, olink_id: OID00004, uniprot: P00004, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_5, olink_id: OID00005, uniprot: P00005, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_6, olink_id: OID00006, uniprot: P00006, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_7, olink_id: OID00007, uniprot: P00007, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_8, olink_id: OID00008, uniprot: P00008, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_9, olink_id: OID00009, uniprot: P00009, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_10, olink_id: OID00010, uniprot: P00010, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_11, olink_id: OID00011, uniprot: P00011, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_12, olink_id: OID00012, uniprot: P00012, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_13, olink_id: OID00013, uniprot: P00013, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_14, olink_id: OID00014, uniprot: P00014, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_15, olink_id: OID00015, uniprot: P00015, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_16, olink_id: OID00016, uniprot: P00016, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_17, olink_id: OID00017, uniprot: P00017, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_18, olink_id: OID00018, uniprot: P00018, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_19, olink_id: OID00019, uniprot: P00019, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_20, olink_id: OID00020, uniprot: P00020, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_21, olink_id: OID00021, uniprot: P00021, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_22, olink_id: OID00022, uniprot: P00022, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_23, olink_id: OID00023, uniprot: P00023, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_24, olink_id: OID00024, uniprot: P00024, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_25, olink_id: OID00025, uniprot: P00025, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_26, olink_id: OID00026, uniprot: P00026, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_27, olink_id: OID00027, uniprot: P00027, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_28, olink_id: OID00028, uniprot: P00028, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_29, olink_id: OID00029, uniprot: P00029, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_30, olink_id: OID00030, uniprot: P00030, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_31, olink_id: OID00031, uniprot: P00031, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_32, olink_id: OID00032, uniprot: P00032, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_33, olink_id: OID00033, uniprot: P00033, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_34, olink_id: OID00034, uniprot: P00034, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_35, olink_id: OID00035, uniprot: P00035, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_36, olink_id: OID00036, uniprot: P00036, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_37, olink_id: OID00037, uniprot: P00037, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_38, olink_id: OID00038, uniprot: P00038, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_39, olink_id: OID00039, uniprot: P00039, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_40, olink_id: OID00040, uniprot: P00040, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_41, olink_id: OID00041, uniprot: P00041, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_42, olink_id: OID00042, uniprot: P00042, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_43, olink_id: OID00043, uniprot: P00043, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_44, olink_id: OID00044, uniprot: P00044, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_45, olink_id: OID00045, uniprot: P00045, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_46, olink_id: OID00046, uniprot: P00046, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_47, olink_id: OID00047, uniprot: P00047, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_48, olink_id: OID00048, uniprot: P00048, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_49, olink_id: OID00049, uniprot: P00049, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_50, olink_id: OID00050, uniprot: P00050, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_51, olink_id: OID00051, uniprot: P00051, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_52, olink_id: OID00052, uniprot: P00052, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_53, olink_id: OID00053, uniprot: P00053, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_54, olink_id: OID00054, uniprot: P00054, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_55, olink_id: OID00055, uniprot: P00055, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_56, olink_id: OID00056, uniprot: P00056, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_57, olink_id: OID00057, uniprot: P00057, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_58, olink_id: OID00058, uniprot: P00058, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_59, olink_id: OID00059, uniprot: P00059, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_60, olink_id: OID00060, uniprot: P00060, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_61, olink_id: OID00061, uniprot: P00061, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_62, olink_id: OID00062, uniprot: P00062, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_63, olink_id: OID00063, uniprot: P00063, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_64, olink_id: OID00064, uniprot: P00064, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_65, olink_id: OID00065, uniprot: P00065, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_66, olink_id: OID00066, uniprot: P00066, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_67, olink_id: OID00067, uniprot: P00067, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_68, olink_id: OID00068, uniprot: P00068, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_69, olink_id: OID00069, uniprot: P00069, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_70, olink_id: OID00070, uniprot: P00070, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_71, olink_id: OID00071, uniprot: P00071, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_72, olink_id: OID00072, uniprot: P00072, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_73, olink_id: OID00073, uniprot: P00073, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_74, olink_id: OID00074, uniprot: P00074, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_75, olink_id: OID00075, uniprot: P00075, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_76, olink_id: OID00076, uniprot: P00076, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_77, olink_id: OID00077, uniprot: P00077, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_78, olink_id: OID00078, uniprot: P00078, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_79, olink_id: OID00079, uniprot: P00079, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_80, olink_id: OID00080, uniprot: P00080, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_81, olink_id: OID00081, uniprot: P00081, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_82, olink_id: OID00082, uniprot: P00082, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_83, olink_id: OID00083, uniprot: P00083, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_84, olink_id: OID00084, uniprot: P00084, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_85, olink_id: OID00085, uniprot: P00085, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_86, olink_id: OID00086, uniprot: P00086, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_87, olink_id: OID00087, uniprot: P00087, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_88, olink_id: OID00088, uniprot: P00088, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_89, olink_id: OID00089, uniprot: P00089, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_90, olink_id: OID00090, uniprot: P00090, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_91, olink_id: OID00091, uniprot: P00091, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+      - {assay: assay_92, olink_id: OID00092, uniprot: P00092, panel: Olink Target 96 Inflammation, lod: 1.0, below_lod: 0.05,
+         quantiles: [1.0, 2.6, 3.4, 4.0, 4.5, 5.0, 5.5, 6.0, 6.6, 7.4, 9.5]}
+
+effects:
+  - {dataset: olink, feature: IL6, contrast: [patient, healthy], fold_change: 2.0}

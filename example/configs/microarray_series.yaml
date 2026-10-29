@@ -1,0 +1,30 @@
+# Made from example/descriptions/microarray_series.md by the sdg workflow.
+# Every name and number is invented.
+version: 1
+seed: 20261011
+mode: model
+
+design:
+  subjects:
+    prefix: GSM100
+    groups:
+      responder: 10
+      non_responder: 10
+
+datasets:
+  - name: expression
+    format: microarray
+    file: expression.tsv
+    platform: GPL570
+    feature_column: ID_REF
+    feature_count: 1000
+    feature_prefix: "probe_"
+    mean_quantiles: [3.0, 4.0, 4.6, 5.2, 5.8, 6.5, 7.2, 8.0, 9.0, 10.5, 14.0]  # assumption: typical RMA output
+    sd_quantiles: [0.05, 0.1, 0.12, 0.15, 0.18, 0.21, 0.25, 0.3, 0.38, 0.5, 1.5]
+    array_shift_sd: 0.15  # assumption: two batches shift the arrays a little
+    decimals: 3
+
+effects:
+  - {dataset: expression, feature: probe_1, contrast: [responder, non_responder], fold_change: 2.0}
+  - {dataset: expression, feature: probe_2, contrast: [responder, non_responder], fold_change: 2.0}
+  - {dataset: expression, feature: probe_3, contrast: [responder, non_responder], fold_change: 2.0}

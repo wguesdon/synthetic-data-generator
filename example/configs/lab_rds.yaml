@@ -1,0 +1,27 @@
+# Generic example: one lab table as an RDS file of an R data frame.
+# Every name and value here is invented. It needs the extra sdg[r].
+version: 1
+seed: 20261028
+mode: resample
+
+datasets:
+  - name: lab
+    format: rds
+    file: lab_results.rds
+    sheets:
+      - rows: 120
+        columns:
+          - name: record_id
+            kind: identifier
+            pattern: "LAB-9999"
+          - name: site
+            kind: categorical
+            levels: {north: 0.6, south: 0.4}
+          - name: crp_mg_l
+            kind: numeric
+            quantiles: [0.3, 1.2, 4.5, 18.0, 180.0]
+            decimals: 1
+            missing: 0.05
+          - name: fasting
+            kind: boolean
+            true_share: 0.3

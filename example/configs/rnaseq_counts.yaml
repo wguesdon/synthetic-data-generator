@@ -1,0 +1,35 @@
+# Made from example/descriptions/rnaseq_counts.md by the sdg workflow.
+# Every name and number is invented.
+version: 1
+seed: 20261011
+mode: model
+
+design:
+  subjects:
+    prefix: PAT-
+    groups:
+      treated: 6
+      untreated: 6
+  timepoints: [pre, post]
+  icc: 0.7  # assumption: no between-patient share was given
+
+datasets:
+  - name: counts
+    format: counts
+    file: counts.tsv
+    feature_column: gene_id
+    annotation_columns: [gene_name]
+    feature_count: 2000  # assumption: generic gene names, as no gene list was given
+    feature_prefix: "gene_"
+    log_mean_quantiles: [0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.5, 9.0, 13.0]  # assumption: typical bulk RNA-seq
+    dispersion: 0.05
+    dispersion_extra: 1.0
+    library_size_cv: 0.2
+    biological_cv: 0.3
+
+effects:
+  - {dataset: counts, feature: gene_1, contrast: [treated, untreated], fold_change: 3.0, timepoints: [post]}
+  - {dataset: counts, feature: gene_2, contrast: [treated, untreated], fold_change: 3.0, timepoints: [post]}
+  - {dataset: counts, feature: gene_3, contrast: [treated, untreated], fold_change: 3.0, timepoints: [post]}
+  - {dataset: counts, feature: gene_4, contrast: [treated, untreated], fold_change: 3.0, timepoints: [post]}
+  - {dataset: counts, feature: gene_5, contrast: [treated, untreated], fold_change: 3.0, timepoints: [post]}

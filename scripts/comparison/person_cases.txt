@@ -1,0 +1,4 @@
+case	file
+synthea_patients	input/public/synthea_csv/patients.csv
+synthea_encounters	input/public/synthea_csv/encounters.csv
+titanic	input/public/titanic_csv/titanic.csv

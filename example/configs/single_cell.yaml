@@ -1,0 +1,36 @@
+# Made from example/descriptions/single_cell.md by the sdg workflow.
+# Every name and number is invented.
+version: 1
+seed: 20261011
+mode: resample
+
+datasets:
+  - name: cells
+    format: h5ad
+    file: cells.h5ad
+    cells: 2000
+    feature_count: 800
+    feature_prefix: "gene_"
+    log_mean_quantiles: [0.0, 0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 0.8, 1.2, 2.0, 6.0]  # assumption: typical 10x data
+    dispersion: 0.1
+    dispersion_extra: 1.0
+    library_size_cv: 0.5
+    obs:
+      - name: donor
+        kind: categorical
+        levels: {donor_1: 0.5, donor_2: 0.5}
+      - name: leiden
+        kind: categorical
+        levels: {"0": 0.3, "1": 0.25, "2": 0.2, "3": 0.15, "4": 0.1}
+      - name: n_genes
+        kind: numeric
+        quantiles: [200, 600, 900, 1200, 1600, 2500]  # assumption: no range was given
+        decimals: 0
+      - name: total_counts
+        kind: numeric
+        quantiles: [500, 2000, 3500, 5000, 8000, 15000]  # assumption: no range was given
+        decimals: 0
+    layers: [counts]
+    obsm: {X_pca: 50, X_umap: 2}
+    x_kind: log1p
+    clusters: {column: leiden, marker_genes: 20, marker_log2fc: 2.0}
