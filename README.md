@@ -9,7 +9,7 @@
 `sdg` needs Python 3.13 or later and `uv`. Add it to a project from a release tag.
 
 ```bash
-uv add "sdg @ git+https://github.com/wguesdon/synthetic-data-generator@v0.14.0"
+uv add "sdg @ git+https://github.com/wguesdon/synthetic-data-generator@v0.15.0"
 ```
 
 Two extras add optional features.
@@ -20,13 +20,13 @@ Two extras add optional features.
 | `r` | The `rds` format for an R data frame, through `pyreadr` |
 
 ```bash
-uv add "sdg[faker,r] @ git+https://github.com/wguesdon/synthetic-data-generator@v0.14.0"
+uv add "sdg[faker,r] @ git+https://github.com/wguesdon/synthetic-data-generator@v0.15.0"
 ```
 
 To use the `sdg` command outside a project, install it as a uv tool.
 
 ```bash
-uv tool install "sdg[faker,r] @ git+https://github.com/wguesdon/synthetic-data-generator@v0.14.0"
+uv tool install "sdg[faker,r] @ git+https://github.com/wguesdon/synthetic-data-generator@v0.15.0"
 ```
 
 To work on `sdg` itself, clone the repository and run `uv sync` from its root.
@@ -63,6 +63,7 @@ The repository holds no real data. The examples and the test fixtures hold inven
 | `uv run sdg report <files> -o reports/` | Secure machine | Writes the glimpse and the descriptions as one report, after an audit |
 | `uv run sdg relabel key.csv <files> -o <folder>` | Secure machine | Copies the real files with the generic names of a label key |
 | `uv run sdg audit config.yaml <files>` | Secure machine | Fails when a config or a report holds a real value |
+| `uv run sdg quarto <folder> --synthetic <output> -o reports/` | Secure machine | Writes a Quarto report of each table: columns, head, tail and plots, the real data beside the synthetic data. It holds real values |
 | `uv run sdg init <formats>` | Any | Writes a template config with a comment on each field |
 | `uv run sdg schema` | Any | Prints the JSON schema of the config |
 | `uv run sdg check config.yaml` | Any | Validates a config |

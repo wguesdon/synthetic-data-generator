@@ -1,6 +1,6 @@
 Package: sdgr
 Title: Synthetic Datasets from a YAML Config with the 'sdg' Tool
-Version: 0.14.0
+Version: 0.15.0
 Authors@R:
     person("William", "Guesdon", email = "wguesdon@gmail.com", role = c("aut", "cre"))
 Description: Calls the 'sdg' command line tool from R. The functions write a
@@ -19,5 +19,5 @@ Suggests:
     readxl,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-SystemRequirements: sdg 0.14.0 or later (the Python package of
+SystemRequirements: sdg 0.15.0 or later (the Python package of
     https://github.com/wguesdon/synthetic-data-generator)

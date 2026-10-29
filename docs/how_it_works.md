@@ -101,7 +101,7 @@ Each command works with the same options, and each report is the same as the rep
 | uv can download packages from PyPI or from a mirror | The header of the file lists the dependencies in the PEP 723 form. uv installs them in a cached environment on the first run. For a mirror, set `UV_DEFAULT_INDEX` to its URL |
 | Python 3.13 or later is on the machine, or uv can download it | The package needs Python 3.13. The script was checked on Python 3.13 and 3.14 |
 
-To get the file, copy it from the release tag of the repository, for example with `git show v0.14.0:single_script/sdg_secure.py > sdg_secure.py`.
+To get the file, copy it from the release tag of the repository, for example with `git show v0.15.0:single_script/sdg_secure.py > sdg_secure.py`.
 
 To use the Python functions, import the file one time. Then `import sdg` loads the package from the file. Put the analysis in a script in the folder of `sdg_secure.py`, and run it with the dependencies of the single script.
 
@@ -345,6 +345,28 @@ uv run sdg report data/ --generic-labels --label-key key.csv -o reports/
 | Groups | The report of `sdg describe groups` for the same tables. A table with no two groups gets the note `no two groups to compare` |
 
 A description finds the roles of the columns from their names. If a role is wrong, run `sdg describe` on that table with the role options, and paste that report as well. `sdg compare` reads the glimpse part of a report and skips the description tables, so the report can replace a glimpse report.
+
+## A Quarto report on the secure machine
+
+`sdg quarto` writes a Quarto report of any folder. On the secure machine, give it the real data and the output folder of `sdg generate`, so you can compare the two. The report holds real values: keep it on the secure machine, and never paste it into an LLM.
+
+```bash
+uv run sdg quarto data/ --synthetic sdg_output/visits/data -o reports/
+```
+
+| Part | Content |
+|---|---|
+| Banner | "Secure machine only: this report holds real values", when a target is not an sdg output folder |
+| Differences | The differences that `sdg compare` finds between the real and the synthetic glimpse |
+| Columns | For each table, the glimpse facts as a table: kind, filled, empty, unique and the other facts |
+| Rows | The first and the last rows, 5 of each by default. `--rows 0` prints none |
+| Plots | A histogram of each numeric column and a bar chart of each category column. The real and the synthetic plot of a column sit side by side, on the same bins and the same scale |
+
+A real table pairs with the synthetic table at the same position, as in `sdg compare`. A file in a format other than a plain table gets its glimpse only. Without `--synthetic`, the report describes the targets alone. A report of an sdg output folder alone holds no real value, so it has no banner.
+
+The command writes `quarto_report_<timestamp>.qmd`. The tables and the plots are already in the file, as Markdown and inline SVG, so Quarto needs no Python or R kernel. When `quarto` is on the `PATH`, the command renders one self-contained HTML file next to it. `--no-render` writes the `.qmd` file only. In R, `sdgr::sdg_quarto()` takes data frames.
+
+The report carries the marker `sdg-secure-only`. `sdg audit` fails on a file with this marker, whatever real values it finds.
 
 ## Tests on synthetic data
 

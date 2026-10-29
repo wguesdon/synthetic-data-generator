@@ -92,6 +92,50 @@ sdg_profile <- function(data, output = tempfile("sdg_config_", fileext = ".yaml"
   invisible(output)
 }
 
+#' Write a Quarto report of data for the secure machine
+#'
+#' The report shows the column table, the first and the last rows, and a plot
+#' for each numeric and category column of each table. With `synthetic`, each
+#' table sits beside its synthetic table, and the report lists the
+#' differences that `sdg compare` finds. The report holds real values: keep it
+#' on the secure machine, and never paste it into an LLM.
+#'
+#' @inheritParams sdg_glimpse
+#' @param synthetic The synthetic data: a data frame, or the paths of files or
+#'   of an sdg output folder. `NULL` reports `data` alone.
+#' @param output The folder of the report.
+#' @param rows Rows of the head and of the tail. `0` prints no rows.
+#' @param render Render the report to one HTML file when Quarto is on the
+#'   `PATH`.
+#' @return The path of the HTML file, or of the `.qmd` file when no HTML was
+#'   rendered, invisibly.
+#' @export
+#' @examples
+#' if (sdg_available()) {
+#'   path <- sdg_quarto(airquality, render = FALSE)
+#'   readLines(path, n = 12)
+#' }
+sdg_quarto <- function(data, synthetic = NULL, output = tempfile("sdg_quarto_"), rows = 5L, render = TRUE,
+                       name = "dataframe.csv", private = NULL, drop = NULL, flags = character()) {
+  folder <- tempfile("sdgr_")
+  on.exit(unlink(folder, recursive = TRUE), add = TRUE)
+  args <- c("quarto", data_targets(data, file.path(folder, "data"), name), "-o", path.expand(output),
+            "--rows", format(rows, scientific = FALSE))
+  if (!is.null(synthetic)) {
+    args <- c(args, "--synthetic", data_targets(synthetic, file.path(folder, "synthetic"), name))
+  }
+  if (!isTRUE(render)) {
+    args <- c(args, "--no-render")
+  }
+  args <- c(args, reading_args(private, FALSE, drop, NULL, flags))
+  dir.create(output, recursive = TRUE, showWarnings = FALSE)
+  before <- list.files(output, full.names = TRUE)
+  sdg_run(args)
+  written <- setdiff(list.files(output, full.names = TRUE), before)
+  html <- written[grepl("\\.html$", written)]
+  invisible(if (length(html)) html[[1]] else written[grepl("\\.qmd$", written)][[1]])
+}
+
 #' Print the text of sdg
 #'
 #' @param x The lines, with the class `sdg_text`.

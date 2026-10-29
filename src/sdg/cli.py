@@ -25,6 +25,7 @@ from sdg.from_schema import DEFAULT_ROWS, from_schema
 from sdg.generate import generate
 from sdg.glimpse import glimpse, report_path, write_report
 from sdg.profile import profile, to_yaml
+from sdg.quarto import render_quarto, write_quarto
 from sdg.relabel import relabel_files
 from sdg.report import glimpse_tables, parse, render
 from sdg.secure_report import secure_report
@@ -255,6 +256,37 @@ def run_report(args: argparse.Namespace) -> int:
         print(f"Wrote {path}. The audit passed; read the report before you copy it.")
     else:
         sys.stdout.write(result.text)
+    return 0
+
+
+def run_quarto(args: argparse.Namespace) -> int:
+    """Write the Quarto report of the targets, and render it when Quarto is on the PATH.
+
+    Args:
+        args: Parsed arguments with ``targets``, ``synthetic``, ``rows``,
+            ``output``, ``no_render`` and the shared options.
+
+    Returns:
+        The exit code: 0, or 1 when a target cannot be read.
+    """
+    options = read_options(args)
+    synthetic = [Path(target) for target in args.synthetic] if args.synthetic else None
+    try:
+        result = write_quarto([Path(target) for target in args.targets], options, Path(args.output),
+                              synthetic, args.rows)
+    except (FileNotFoundError, ValueError) as error:
+        print(f"sdg quarto: {error}", file=sys.stderr)
+        return 1
+    print(f"Wrote {result.path}.")
+    if result.secure:
+        print("The report holds real values: keep it on the secure machine.", file=sys.stderr)
+    if args.no_render:
+        return 0
+    rendered = render_quarto(result.path)
+    if rendered is None:
+        print(f"No HTML was rendered. Run: quarto render {result.path}")
+    else:
+        print(f"Rendered {rendered}.")
     return 0
 
 
@@ -580,6 +612,25 @@ def build_parser() -> argparse.ArgumentParser:
                                help="Write the report to <OUTPUT>_<timestamp>.txt, or into a directory.")
     add_key_option(report_parser)
     report_parser.set_defaults(handler=run_report)
+
+    quarto_parser = commands.add_parser(
+        "quarto", help="Write a Quarto report of a folder: columns, head, tail and plots. It holds real values.")
+    quarto_parser.add_argument("targets", nargs="+", help="Files or directories, real or synthetic.")
+    quarto_parser.add_argument("--synthetic", nargs="+", metavar="TARGET",
+                               help="The synthetic files or the sdg output folder to put beside the targets.")
+    quarto_parser.add_argument("--rows", type=int, default=5, help="Rows of the head and of the tail. 0 prints none.")
+    quarto_parser.add_argument("-o", "--output", required=True, help="Folder of the report.")
+    quarto_parser.add_argument("--no-render", action="store_true", help="Write the .qmd file only.")
+    quarto_parser.add_argument("--format", help="Format of every target. The default detects it from the file suffix.")
+    quarto_parser.add_argument("--private", default=privacy.DEFAULT_PRIVATE_FILES,
+                               help="A file whose name matches this pattern is private in the column table.")
+    quarto_parser.add_argument("--max-categories", type=int, default=privacy.MAX_LEVELS,
+                               help="Most categories, shapes or tokens listed per column.")
+    quarto_parser.add_argument("--recursive", action="store_true", help="Read the subdirectories as well.")
+    quarto_parser.add_argument("--drop", metavar="PATTERN",
+                               help="Leave out each column of a plain table whose name matches this pattern.")
+    quarto_parser.add_argument("--set", action="append", metavar="KEY=VALUE", help="A format setting. Repeat as needed.")
+    quarto_parser.set_defaults(handler=run_quarto, generic_labels=False)
 
     relabel_parser = commands.add_parser(
         "relabel", help="Copy real CSV, TSV and Excel files with the generic names of a label key.")

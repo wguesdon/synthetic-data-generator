@@ -28,7 +28,7 @@ Run each command through `uv run sdg`. Do not call Python directly to make data.
 | `uv run sdg compare <real report> <synthetic report>` | Lists the structure differences between two glimpse reports |
 | `uv run sdg validate <folder>` | Checks the output against the config, and the planted effects against the truth tables |
 
-The user runs `sdg glimpse`, `sdg describe`, `sdg report`, `sdg profile`, `sdg audit` and `sdg relabel` on the secure machine. You never run them on real data. If `sdg` is not installed on the secure machine, the user can upload `single_script/sdg_secure.py` and run `uv run sdg_secure.py glimpse <files>`. The reports are the same.
+The user runs `sdg glimpse`, `sdg describe`, `sdg report`, `sdg profile`, `sdg audit` and `sdg relabel` on the secure machine. You never run them on real data. `sdg quarto` writes a report with real values for the user on the secure machine. Never ask the user to paste or upload that report. If `sdg` is not installed on the secure machine, the user can upload `single_script/sdg_secure.py` and run `uv run sdg_secure.py glimpse <files>`. The reports are the same.
 
 ## Data boundary
 

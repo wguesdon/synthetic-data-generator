@@ -5,4 +5,4 @@ hatchling, and ``tests/test_version.py`` checks that the root ``VERSION`` file
 holds the same value.
 """
 
-SDG_VERSION = "0.14.0"
+SDG_VERSION = "0.15.0"

@@ -4,6 +4,13 @@ This file records each change that a user can see. The format follows Keep a Cha
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-10-29
+
+### Added
+
+- `sdg quarto TARGET... [--synthetic OUTPUT] -o DIR` writes a Quarto report of each table: the glimpse facts as a column table, the head and the tail, and a plot of each numeric and category column. With `--synthetic`, the real and the synthetic table sit side by side, and the report lists the differences of `sdg compare`. The command renders one HTML file when Quarto is on the `PATH`. The report holds real values, and `sdg audit` refuses it.
+- The R package has `sdg_quarto()`.
+
 ## [0.14.0] - 2026-10-29
 
 ### Changed

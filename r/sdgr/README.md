@@ -7,19 +7,19 @@
 `sdgr` needs the `sdg` command. Install `sdg` as a uv tool, so that the command `sdg` is on the `PATH`. The extra `sdg[r]` adds the RDS format.
 
 ```bash
-uv tool install "sdg[r] @ git+https://github.com/wguesdon/synthetic-data-generator@v0.14.0"
+uv tool install "sdg[r] @ git+https://github.com/wguesdon/synthetic-data-generator@v0.15.0"
 ```
 
 Then install the R package from GitHub with the package `remotes`.
 
 ```r
-remotes::install_github("wguesdon/synthetic-data-generator", subdir = "r/sdgr", ref = "v0.14.0")
+remotes::install_github("wguesdon/synthetic-data-generator", subdir = "r/sdgr", ref = "v0.15.0")
 ```
 
 A clone of the repository works too.
 
 ```bash
-git clone --branch v0.14.0 https://github.com/wguesdon/synthetic-data-generator.git
+git clone --branch v0.15.0 https://github.com/wguesdon/synthetic-data-generator.git
 R CMD INSTALL synthetic-data-generator/r/sdgr
 ```
 
@@ -37,6 +37,7 @@ sdgr::sdg_available()
 | `sdg_glimpse(data)` | Secure | The glimpse report of a data frame or of files, with no real value |
 | `sdg_report(data)` | Secure | The path of the audited report: the glimpse, the designs and the group differences |
 | `sdg_profile(data)` | Secure | The path of a config made from a data frame or from files |
+| `sdg_quarto(data, synthetic)` | Secure | The path of a Quarto report with the columns, the head, the tail and plots, the real data beside the synthetic data. It holds real values |
 | `sdg_check(config)` | Any | The summary of a valid config. The function stops with each issue of a config that is not valid |
 | `sdg_generate(config)` | Any | The output folder with the synthetic data |
 | `sdg_read(output)` | Any | A named list of the data frames in an output folder |

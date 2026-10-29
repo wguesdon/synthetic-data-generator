@@ -40,6 +40,17 @@ test_that("a data frame gives a glimpse, a report and a config with no real valu
   expect_length(intersect(synthetic$record_id, visits$record_id), 0L)
 })
 
+test_that("a Quarto report puts the real and the synthetic rows side by side", {
+  skip_if_not(sdg_available(), "sdg does not run")
+  visits <- invented_visits()
+  synthetic <- sdg_data(sdg_profile(visits, seed = 3))[[1]]
+  expect_message(path <- sdg_quarto(visits, synthetic = synthetic, render = FALSE), "secure machine")
+  text <- readLines(path)
+  expect_true(any(grepl("sdg-secure-only", text, fixed = TRUE)))
+  expect_true(any(grepl("### Synthetic rows", text, fixed = TRUE)))
+  expect_true(any(grepl("R1000", text, fixed = TRUE)))
+})
+
 test_that("generic labels hide the column names", {
   skip_if_not(sdg_available(), "sdg does not run")
   key <- tempfile(fileext = ".csv")

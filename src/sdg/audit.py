@@ -179,9 +179,13 @@ def find_leaks(text: str, values: dict[str, str]) -> list[Finding]:
     Returns:
         One finding per value found, at its first position, and one per
         sequence, in line order. A label key is a finding of its own, because
-        it holds the real name behind each generic name.
+        it holds the real name behind each generic name, and so is a report
+        with the secure marker, which holds real values by design.
     """
     findings = [Finding(1, "label key", ",".join(privacy.KEY_FIELDS))] if privacy.is_label_key(text) else []
+    if privacy.SECURE_MARKER in text:
+        findings.append(Finding(text[:text.index(privacy.SECURE_MARKER)].count("\n") + 1, "secure-only report",
+                                privacy.SECURE_MARKER))
     report = is_report(text)
     for value, kind in values.items():
         needle = value.strip()

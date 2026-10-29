@@ -49,6 +49,10 @@ PRIVATE_COLUMNS = re.compile(r"\bage\b|\bsex\b|gender|\bbmi\b|weight|birth|comor
 #: Default pattern of file names whose tables record counts only.
 DEFAULT_PRIVATE_FILES = "clinical"
 
+#: The marker of a report that holds real values by design, such as the
+#: Quarto report of ``sdg quarto``. ``sdg audit`` refuses a text with it.
+SECURE_MARKER = "sdg-secure-only: this report holds real values"
+
 #: A column is numeric when at least this share of its filled cells parse as
 #: numbers and its other cells hold few distinct tokens, such as ``NA``. A share
 #: of 0.8 alone lets a column with 26 ``NA`` rows in 120 print every value.

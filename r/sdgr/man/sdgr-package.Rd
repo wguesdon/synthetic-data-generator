@@ -8,9 +8,11 @@
 \description{
 sdgr calls the \code{sdg} command line tool from R. On the secure machine,
 \code{\link[=sdg_glimpse]{sdg_glimpse()}}, \code{\link[=sdg_report]{sdg_report()}} and \code{\link[=sdg_profile]{sdg_profile()}} describe a data frame
-with no real value. On any machine, \code{\link[=sdg_check]{sdg_check()}}, \code{\link[=sdg_generate]{sdg_generate()}},
-\code{\link[=sdg_read]{sdg_read()}} and \code{\link[=sdg_data]{sdg_data()}} make synthetic data from a config and read it
-back as data frames. \code{\link[=sdg_command]{sdg_command()}} tells how sdgr finds sdg.
+with no real value, and \code{\link[=sdg_quarto]{sdg_quarto()}} shows the real data beside the
+synthetic data in a report that stays on that machine. On any machine,
+\code{\link[=sdg_check]{sdg_check()}}, \code{\link[=sdg_generate]{sdg_generate()}}, \code{\link[=sdg_read]{sdg_read()}} and \code{\link[=sdg_data]{sdg_data()}} make
+synthetic data from a config and read it back as data frames.
+\code{\link[=sdg_command]{sdg_command()}} tells how sdgr finds sdg.
 }
 \author{
 \strong{Maintainer}: William Guesdon \email{wguesdon@gmail.com}
